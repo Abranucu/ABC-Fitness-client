@@ -5,7 +5,7 @@ import service from "../services/config.services";
 const AuthContext = createContext();
 
 function AuthWrapper(props) {
-  const [issLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedUserId, setLoggedUserId] = useState(null);
   const [userRole, setUserRole] = useState(null);
 
@@ -23,7 +23,7 @@ function AuthWrapper(props) {
     }
   };
   const passedContext = {
-    issLoggedIn,
+    isLoggedIn,
     loggedUserId,
     authenticateUser,
   };

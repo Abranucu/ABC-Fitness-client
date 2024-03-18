@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { Routes, Route, useLocation } from "react-router";
 import "./App.css";
 
@@ -23,18 +23,20 @@ import NotFound from "./pages/err/NotFound";
 import Navbar from "./components/Navbar";
 import IsAdmin from "./components/IsAdmin";
 import AuthRequest from "./components/AuthRequest";
+import { AuthContext } from "./context/auth.context";
 
 function App() {
   const location = useLocation();
-  const hideNavbarRoutes = ["/", "/signup", "/login"];
+  const { isLoggedIn } = useContext(AuthContext);
 
-  const isNavbarHidden = () => {
-    return hideNavbarRoutes.includes(location.pathname);
-  };
+  const isAuthPage =
+    location.pathname === "/signup" || location.pathname === "/login";
+
+  const showNavbar = isLoggedIn && !isAuthPage;
 
   return (
     <div>
-      {!isNavbarHidden() && <Navbar />}
+      {showNavbar && <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />

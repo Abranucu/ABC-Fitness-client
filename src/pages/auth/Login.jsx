@@ -21,7 +21,7 @@ function Login() {
 
     try {
       const res = await service.post("/auth/login", credentials);
-      localStorage.setItem("authToken", res.data.authToken);
+      localStorage.setItem("authToken", res.data);
       await authenticateUser();
       navigate("/");
     } catch (err) {
