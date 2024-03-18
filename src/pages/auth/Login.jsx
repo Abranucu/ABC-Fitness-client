@@ -23,7 +23,7 @@ function Login() {
       const res = await service.post("/auth/login", credentials);
       localStorage.setItem("authToken", res.data.authToken);
       await authenticateUser();
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       let errCode = err.response.status;
       let errMessage = err.response.data.message;

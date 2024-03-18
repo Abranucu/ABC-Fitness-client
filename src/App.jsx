@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router";
+import { Routes, Route, useLocation } from "react-router";
 import "./App.css";
 
 // Pages
@@ -25,11 +25,16 @@ import IsAdmin from "./components/IsAdmin";
 import AuthRequest from "./components/AuthRequest";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const location = useLocation();
+  const hideNavbarRoutes = ["/", "/signup", "/login"];
+
+  const isNavbarHidden = () => {
+    return hideNavbarRoutes.includes(location.pathname);
+  };
 
   return (
     <div>
-      <Navbar />
+      {!isNavbarHidden() && <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />

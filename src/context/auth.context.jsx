@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
-import axios from "axios";
 import { useEffect } from "react";
+import service from "../services/config.services";
 
 const AuthContext = createContext();
 
@@ -10,11 +10,8 @@ function AuthWrapper(props) {
   const [userRole, setUserRole] = useState(null);
 
   const authenticateUser = async () => {
-    const storedToken = localStorage.getItem("authToken");
     try {
-      const res = await axios.get("http://localhost:5005/api/auth/verify", {
-        headers: { authorization: `Bearer ${storedToken}` },
-      });
+      const res = await service.get("/auth/verify");
       setIsLoggedIn(true);
       setLoggedUserId(res.data._id);
       setUserRole(res.data.role);
