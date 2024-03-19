@@ -18,7 +18,7 @@ function Home() {
     } else {
       setLoading(false);
     }
-  }, [isLoggedIn]); // Solo observamos cambios en isLoggedIn
+  }, [isLoggedIn]);
 
   const getUserById = async () => {
     try {

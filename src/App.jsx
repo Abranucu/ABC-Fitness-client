@@ -56,7 +56,10 @@ function App() {
         />
         <Route path="/routines" element={<Routines />} />
         <Route path="/exercises" element={<Exercises />} />
-        <Route path="/exercise-details" element={<ExerciseDetails />} />
+        <Route
+          path="/exercise-details/:exerciseId"
+          element={<ExerciseDetails />}
+        />
         <Route
           path="/edit-routine"
           element={

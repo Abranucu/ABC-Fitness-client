@@ -21,11 +21,8 @@ function Navbar() {
         Perfil
       </span>
       <br />
-      <span
-        className="nav-link"
-        onClick={() => handleNavigate("/profile/routines")}
-      >
-        Mis Rutinas
+      <span className="nav-link" onClick={() => handleNavigate("/")}>
+        Home
       </span>
     </nav>
   );

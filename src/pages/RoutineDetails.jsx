@@ -1,12 +1,19 @@
 import { useState, useEffect } from "react";
 import service from "../services/config.services";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function RoutineDetails() {
-  const { routineId } = useParams(); // Obtener el parámetro de la URL que contiene el ID de la rutina
+  const { routineId } = useParams();
   const [routine, setRoutine] = useState("");
-  const [exercises, setExercises] = useState("");
+  const [exercises, setExercises] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getRoutineById();
+    setLoading(false);
+  }, [routineId]);
 
   const getRoutineById = async () => {
     try {
@@ -20,11 +27,6 @@ function RoutineDetails() {
     }
   };
 
-  useEffect(() => {
-    getRoutineById();
-    setLoading(false);
-  }, [routineId]);
-
   if (loading) {
     return <p>Cargando...</p>;
   }
@@ -34,17 +36,22 @@ function RoutineDetails() {
       <h1>{routine.name}</h1>
       <p>{routine.description}</p>
       {/* Aquí puedes agregar más detalles de la rutina, según tu modelo de datos */}
-      {/*exercises.map((eachExercise, index) => (
+      {exercises.map((eachExercise, index) => (
         <div key={index}>
-          <h2>{eachExercise.name}</h2>
-          <p>{eachExercise.description}</p>
+          <img
+            src={eachExercise.exercise.img}
+            alt={eachExercise.exercise.name}
+          />
+          <h2>{eachExercise.exercise.name}</h2>
           <button
-            onClick={() => navigate(`/exercise-details/${eachExercise._id}`)}
+            onClick={() =>
+              navigate(`/exercise-details/${eachExercise.exercise._id}`)
+            }
           >
-            Ver rutina
+            Ver ejercicio
           </button>
         </div>
-      ))*/}
+      ))}
     </div>
   );
 }
