@@ -8,7 +8,7 @@ function Login() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(null);
+  const [password, setPassword] = useState("");
   const [errMessage, setErrMessage] = useState(null);
 
   const handleLogin = async (e) => {
@@ -46,6 +46,7 @@ function Login() {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="current-password"
           />
         </div>
         <div>
@@ -55,6 +56,7 @@ function Login() {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
           />
         </div>
         <button type="submit">Iniciar Sesión</button>

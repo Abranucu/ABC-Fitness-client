@@ -50,7 +50,10 @@ function App() {
             </AuthRequest>
           }
         />
-        <Route path="/routine-details" element={<RoutineDetails />} />
+        <Route
+          path="/routine-details/:routineId"
+          element={<RoutineDetails />}
+        />
         <Route path="/routines" element={<Routines />} />
         <Route path="/exercises" element={<Exercises />} />
         <Route path="/exercise-details" element={<ExerciseDetails />} />
