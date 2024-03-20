@@ -59,6 +59,8 @@ function ExerciseDetails() {
       >
         meter con reactplayer
       </iframe>
+      <button>Editar si eres admin</button>
+      <button>Borrar si eres admin</button>
     </div>
   );
 }

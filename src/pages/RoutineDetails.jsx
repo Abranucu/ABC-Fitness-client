@@ -35,7 +35,6 @@ function RoutineDetails() {
     <div>
       <h1>{routine.name}</h1>
       <p>{routine.description}</p>
-      {/* Aquí puedes agregar más detalles de la rutina, según tu modelo de datos */}
       {exercises.map((eachExercise, index) => (
         <div key={index}>
           <img

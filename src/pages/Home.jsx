@@ -4,6 +4,29 @@ import { useNavigate } from "react-router-dom";
 import service from "../services/config.services";
 import logo from "../assets/ABC-fitness-logo-animado.gif";
 
+const fitnessAdvice = [
+  "Bebe suficiente agua para mantenerte hidratado durante el ejercicio.",
+  "Incorpora ejercicios de fuerza en tu rutina para fortalecer los músculos.",
+  "No te saltes el calentamiento antes de hacer ejercicio para prevenir lesiones.",
+  "Agrega variedad a tu rutina de ejercicios para evitar el estancamiento.",
+  "Escucha a tu cuerpo y descansa cuando sea necesario para permitir la recuperación.",
+  "Establece metas realistas y alcanzables para mantenerte motivado.",
+  "Come alimentos ricos en proteínas para ayudar en la recuperación muscular.",
+  "Incorpora ejercicios de flexibilidad para mejorar la amplitud de movimiento.",
+  "Duerme lo suficiente para permitir la recuperación muscular y la regeneración celular.",
+  "No te compares con los demás; cada persona tiene su propio progreso.",
+  "Aprende a hacer los ejercicios correctamente para maximizar los beneficios y prevenir lesiones.",
+  "No te olvides de estirar después del ejercicio para mejorar la flexibilidad.",
+  "Diviértete con tu rutina de ejercicio eligiendo actividades que disfrutes.",
+  "Consulta a un profesional de la salud antes de comenzar un nuevo programa de ejercicios.",
+  "No te castigues por un día malo; sigue adelante y enfócate en el progreso a largo plazo.",
+  "Mantén un diario de entrenamiento para realizar un seguimiento de tu progreso y motivarte.",
+  "No te obsesiones con la balanza; el progreso no siempre se refleja en el peso corporal.",
+  "Haz ejercicio al aire libre para disfrutar de la naturaleza y mejorar tu estado de ánimo.",
+  "Establece una rutina de sueño regular para mejorar el rendimiento y la recuperación.",
+  "Encuentra un compañero de entrenamiento para motivarte mutuamente y hacer el ejercicio más divertido.",
+];
+
 function Home() {
   const { isLoggedIn, loggedUserId } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -34,29 +57,6 @@ function Home() {
       setLoading(false);
     }
   };
-
-  const fitnessAdvice = [
-    "Bebe suficiente agua para mantenerte hidratado durante el ejercicio.",
-    "Incorpora ejercicios de fuerza en tu rutina para fortalecer los músculos.",
-    "No te saltes el calentamiento antes de hacer ejercicio para prevenir lesiones.",
-    "Agrega variedad a tu rutina de ejercicios para evitar el estancamiento.",
-    "Escucha a tu cuerpo y descansa cuando sea necesario para permitir la recuperación.",
-    "Establece metas realistas y alcanzables para mantenerte motivado.",
-    "Come alimentos ricos en proteínas para ayudar en la recuperación muscular.",
-    "Incorpora ejercicios de flexibilidad para mejorar la amplitud de movimiento.",
-    "Duerme lo suficiente para permitir la recuperación muscular y la regeneración celular.",
-    "No te compares con los demás; cada persona tiene su propio progreso.",
-    "Aprende a hacer los ejercicios correctamente para maximizar los beneficios y prevenir lesiones.",
-    "No te olvides de estirar después del ejercicio para mejorar la flexibilidad.",
-    "Diviértete con tu rutina de ejercicio eligiendo actividades que disfrutes.",
-    "Consulta a un profesional de la salud antes de comenzar un nuevo programa de ejercicios.",
-    "No te castigues por un día malo; sigue adelante y enfócate en el progreso a largo plazo.",
-    "Mantén un diario de entrenamiento para realizar un seguimiento de tu progreso y motivarte.",
-    "No te obsesiones con la balanza; el progreso no siempre se refleja en el peso corporal.",
-    "Haz ejercicio al aire libre para disfrutar de la naturaleza y mejorar tu estado de ánimo.",
-    "Establece una rutina de sueño regular para mejorar el rendimiento y la recuperación.",
-    "Encuentra un compañero de entrenamiento para motivarte mutuamente y hacer el ejercicio más divertido.",
-  ];
 
   const randomIndex = Math.floor(Math.random() * fitnessAdvice.length);
   const randomAdvice = fitnessAdvice[randomIndex];

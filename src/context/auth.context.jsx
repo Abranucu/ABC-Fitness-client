@@ -8,6 +8,7 @@ function AuthWrapper(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedUserId, setLoggedUserId] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const authenticateUser = async () => {
     try {
@@ -20,20 +21,25 @@ function AuthWrapper(props) {
       setIsLoggedIn(false);
       setLoggedUserId(null);
       setUserRole(null);
+    } finally {
+      setIsLoading(false);
     }
   };
+
   const passedContext = {
     isLoggedIn,
     loggedUserId,
+    userRole,
     authenticateUser,
   };
+
   useEffect(() => {
     authenticateUser();
   }, []);
 
   return (
     <AuthContext.Provider value={passedContext}>
-      {props.children}
+      {!isLoading && props.children}
     </AuthContext.Provider>
   );
 }
