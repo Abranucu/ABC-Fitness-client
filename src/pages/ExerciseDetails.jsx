@@ -57,7 +57,7 @@ function ExerciseDetails() {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       >
-        meter con reactplayer
+        meter con REACT PLAYER
       </iframe>
       <button>Editar si eres admin</button>
       <button>Borrar si eres admin</button>
