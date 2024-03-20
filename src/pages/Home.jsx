@@ -47,7 +47,7 @@ function Home() {
     try {
       const userData = await service.get("/profile", loggedUserId);
       const allUserRoutines = await service.get(
-        `/routines?userId=${loggedUserId}`
+        `/routines/user/${loggedUserId}`
       );
       setUser(userData.data);
       setUserRoutines(allUserRoutines.data);
@@ -79,7 +79,17 @@ function Home() {
 
   return (
     <div>
-      {isLoggedIn && user ? (
+      {!isLoggedIn ? (
+        <div>
+          <img
+            src={logo}
+            alt="Logo de la aplicación"
+            onClick={() => {
+              navigate("/login");
+            }}
+          />
+        </div>
+      ) : (
         <div>
           <div>
             <h1>Bienvenido, {user.name}!</h1>
@@ -108,16 +118,6 @@ function Home() {
             <h2>Corred insensatos</h2>
             {/* Esto luego meter un carrusel con todos las listas de reproducción para motivación de Spotify, investigar como hacerlo */}
           </div>
-        </div>
-      ) : (
-        <div>
-          <img
-            src={logo}
-            alt="Logo de la aplicación"
-            onClick={() => {
-              navigate("/login");
-            }}
-          />
         </div>
       )}
     </div>

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import service from "../../services/config.services";
 import { AuthContext } from "../../context/auth.context";
@@ -62,6 +62,7 @@ function Login() {
         <button type="submit">Iniciar Sesión</button>
       </form>
       {errMessage && <p>{errMessage}</p>}
+      <button onClick={() => navigate("/signup")}>Registrarse</button>
     </div>
   );
 }

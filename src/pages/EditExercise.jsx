@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import service from "../services/config.services";
 
@@ -45,11 +45,11 @@ function EditExercise() {
   const { exerciseId } = useParams();
   const navigate = useNavigate();
   const [name, setName] = useState("");
-  const [initialPosition, setInitialPosition] = useState(null);
-  const [execution, setExecution] = useState(null);
+  const [initialPosition, setInitialPosition] = useState("");
+  const [execution, setExecution] = useState("");
   const [advice, setAdvice] = useState("");
-  const [involvedMuscles, setInvolvedMuscles] = useState(null);
-  const [involvedMusclesImg, setInvolvedMusclesImg] = useState(null);
+  const [involvedMuscles, setInvolvedMuscles] = useState("");
+  const [involvedMusclesImg, setInvolvedMusclesImg] = useState("");
   const [img, setImg] = useState("");
   const [video, setVideo] = useState("");
   const [errMessage, setErrMessage] = useState(null);
@@ -110,7 +110,7 @@ function EditExercise() {
   return (
     <div>
       <h2>Editar ejercicio</h2>
-      <form onSubmit={handleCreateExercise}>
+      <form onSubmit={handleEditExercise}>
         <div>
           <label htmlFor="name">Nombre:</label>
           <input

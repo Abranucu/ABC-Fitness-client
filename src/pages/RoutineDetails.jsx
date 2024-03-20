@@ -42,6 +42,10 @@ function RoutineDetails() {
             alt={eachExercise.exercise.name}
           />
           <h2>{eachExercise.exercise.name}</h2>
+          <p>Series: {eachExercise.sets}</p>
+          <p>Repeticiones: {eachExercise.repetitions}</p>
+          <p>Peso: {eachExercise.weight}Kg</p>
+          <p>Descanso entre series: {eachExercise.rest}segundos</p>
           <button
             onClick={() =>
               navigate(`/exercise-details/${eachExercise.exercise._id}`)

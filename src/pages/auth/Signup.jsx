@@ -7,13 +7,13 @@ function Signup() {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(null);
-  const [age, setAge] = useState(null);
-  const [sex, setSex] = useState("");
-  const [height, setHeight] = useState(null);
-  const [weight, setWeight] = useState(null);
-  const [currentLevel, setCurrentLevel] = useState("");
-  const [goal, setGoal] = useState("");
+  const [password, setPassword] = useState("");
+  const [age, setAge] = useState("");
+  const [sex, setSex] = useState("Masculino"); // Valor predeterminado
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [currentLevel, setCurrentLevel] = useState("Bajo"); // Valor predeterminado
+  const [goal, setGoal] = useState("Perdida de grasa"); // Valor predeterminado
   const [errMessage, setErrMessage] = useState(null);
 
   const handleSignup = async (e) => {
@@ -97,12 +97,10 @@ function Signup() {
         </div>
         <div>
           <label htmlFor="sex">Género:</label>
-          <input
-            type="text"
-            id="sex"
-            value={sex}
-            onChange={(e) => setSex(e.target.value)}
-          />
+          <select id="sex" value={sex} onChange={(e) => setSex(e.target.value)}>
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+          </select>
         </div>
         <div>
           <label htmlFor="height">Altura:</label>
@@ -124,21 +122,27 @@ function Signup() {
         </div>
         <div>
           <label htmlFor="currentLevel">Nivel actual:</label>
-          <input
-            type="text"
+          <select
             id="currentLevel"
             value={currentLevel}
             onChange={(e) => setCurrentLevel(e.target.value)}
-          />
+          >
+            <option value="Bajo">Bajo</option>
+            <option value="Intermedio">Intermedio</option>
+            <option value="Alto">Alto</option>
+          </select>
         </div>
         <div>
           <label htmlFor="goal">Objetivo:</label>
-          <input
-            type="text"
+          <select
             id="goal"
             value={goal}
             onChange={(e) => setGoal(e.target.value)}
-          />
+          >
+            <option value="Perdida de grasa">Perdida de grasa</option>
+            <option value="Mantenimiento">Mantenimiento</option>
+            <option value="Ganancia muscular">Ganancia muscular</option>
+          </select>
         </div>
         <button type="submit">Registrarse</button>
       </form>

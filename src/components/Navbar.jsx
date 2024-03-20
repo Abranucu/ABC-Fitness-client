@@ -1,29 +1,53 @@
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { AuthContext } from "../context/auth.context";
+import { useContext } from "react";
 
 function Navbar() {
-  const navigate = useNavigate();
+  const { userRole, loggedUserId } = useContext(AuthContext);
 
-  const handleNavigate = (path) => {
-    navigate(path);
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    window.location.href = "/";
   };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <span className="nav-link" onClick={() => handleNavigate("/routines")}>
-        Rutinas
-      </span>
-      <br />
-      <span className="nav-link" onClick={() => handleNavigate("/exercises")}>
-        Ejercicios
-      </span>
-      <br />
-      <span className="nav-link" onClick={() => handleNavigate("/profile")}>
-        Perfil
-      </span>
-      <br />
-      <span className="nav-link" onClick={() => handleNavigate("/")}>
+      <NavLink className="nav-link" to="/" exact="true">
         Home
+      </NavLink>
+      <br />
+      <NavLink className="nav-link" to="/exercises">
+        Ejercicios
+      </NavLink>
+      <br />
+      <NavLink className="nav-link" to="/routines">
+        Rutinas
+      </NavLink>
+      <br />
+      <NavLink className="nav-link" to="/profile">
+        Perfil
+      </NavLink>
+      <br />
+      <NavLink className="nav-link" to={`/routines/user/${loggedUserId}`}>
+        Mis rutinas
+      </NavLink>
+      <br />
+      <NavLink className="nav-link" to={"/create-routine"}>
+        Crear rutina
+      </NavLink>
+      <br />
+      {userRole === "admin" && (
+        <>
+          <NavLink className="nav-link" to="/create-exercise">
+            Crear Ejercicio
+          </NavLink>
+          <br />
+        </>
+      )}
+      <span className="nav-link" onClick={handleLogout}>
+        Logout
       </span>
+      <br />
     </nav>
   );
 }

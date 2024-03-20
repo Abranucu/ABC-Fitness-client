@@ -4,7 +4,6 @@ import { Navigate } from "react-router-dom";
 
 function IsAdmin(props) {
   const { userRole } = useContext(AuthContext);
-  console.log(userRole);
   if (userRole === "admin") {
     return props.children;
   } else {

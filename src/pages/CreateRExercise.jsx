@@ -68,8 +68,8 @@ function CreateRExercise() {
     };
 
     try {
-      await service.post("/exercises", newExercise);
-      navigate(`/exercises/${newExercise._id}`);
+      await service.post("/exercises", newExercise, { new: true });
+      navigate("/exercises");
     } catch (err) {
       let errCode = err.response.status;
       let errMessage = err.response.data.message;

@@ -9,6 +9,7 @@ import Signup from "./pages/auth/Signup";
 import Profile from "./pages/Profile";
 import RoutineDetails from "./pages/RoutineDetails";
 import Routines from "./pages/Routines";
+import UserRoutines from "./pages/UserRoutines";
 import Exercises from "./pages/Exercises";
 import ExerciseDetails from "./pages/ExerciseDetails";
 import EditRoutine from "./pages/EditRoutine";
@@ -55,6 +56,7 @@ function App() {
           element={<RoutineDetails />}
         />
         <Route path="/routines" element={<Routines />} />
+        <Route path="/routines/user/:userId" element={<UserRoutines />} />
         <Route path="/exercises" element={<Exercises />} />
         <Route
           path="/exercise-details/:exerciseId"
@@ -77,7 +79,7 @@ function App() {
           }
         />
         <Route
-          path="/edit-exercise"
+          path="/edit-exercise/:exerciseId"
           element={
             <IsAdmin>
               <EditExercise />

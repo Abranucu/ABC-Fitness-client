@@ -1,11 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import service from "../services/config.services";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/auth.context";
 
 function ExerciseDetails() {
   const { exerciseId } = useParams();
   const [exercise, setExercise] = useState("");
   const [loading, setLoading] = useState(true);
+  const { userRole } = useContext(AuthContext);
+  const isAdmin = userRole === "admin";
+  const navigate = useNavigate();
 
   const getExerciseById = async () => {
     try {
@@ -16,6 +20,19 @@ function ExerciseDetails() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await service.delete(`/exercises/${exerciseId}`);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleEdit = () => {
+    navigate(`/edit-exercise/${exerciseId}`);
   };
 
   useEffect(() => {
@@ -59,8 +76,12 @@ function ExerciseDetails() {
       >
         meter con REACT PLAYER
       </iframe>
-      <button>Editar si eres admin</button>
-      <button>Borrar si eres admin</button>
+      {isAdmin && (
+        <div>
+          <button onClick={handleEdit}>Editar</button>
+          <button onClick={handleDelete}>Borrar</button>
+        </div>
+      )}
     </div>
   );
 }
