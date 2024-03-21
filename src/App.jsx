@@ -13,10 +13,9 @@ import UserRoutines from "./pages/UserRoutines";
 import Exercises from "./pages/Exercises";
 import ExerciseDetails from "./pages/ExerciseDetails";
 import EditRoutine from "./pages/EditRoutine";
-import EditProfile from "./pages/EditProfile";
 import EditExercise from "./pages/EditExercise";
 import CreateRoutine from "./pages/CreateRoutine";
-import CreateExercise from "./pages/CreateRExercise";
+import CreateExercise from "./pages/CreateExercise";
 import Error from "./pages/err/Error";
 import NotFound from "./pages/err/NotFound";
 
@@ -63,18 +62,10 @@ function App() {
           element={<ExerciseDetails />}
         />
         <Route
-          path="/edit-routine"
+          path="/edit-routine/:routineId"
           element={
             <AuthRequest>
               <EditRoutine />
-            </AuthRequest>
-          }
-        />
-        <Route
-          path="/edit-profile"
-          element={
-            <AuthRequest>
-              <EditProfile />
             </AuthRequest>
           }
         />

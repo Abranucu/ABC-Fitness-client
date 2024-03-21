@@ -48,7 +48,7 @@ function EditExercise() {
   const [initialPosition, setInitialPosition] = useState("");
   const [execution, setExecution] = useState("");
   const [advice, setAdvice] = useState("");
-  const [involvedMuscles, setInvolvedMuscles] = useState("");
+  const [involvedMuscles, setInvolvedMuscles] = useState([]);
   const [involvedMusclesImg, setInvolvedMusclesImg] = useState("");
   const [img, setImg] = useState("");
   const [video, setVideo] = useState("");
@@ -94,8 +94,9 @@ function EditExercise() {
 
     try {
       await service.put(`/exercises/${exerciseId}`, editedExercise);
-      navigate(`/exercises/${exerciseId}`);
+      navigate(`/exercise-details/${exerciseId}`);
     } catch (err) {
+      console.log(err);
       // Manejar errores de la solicitud PUT
       let errCode = err.response.status;
       let errMessage = err.response.data.message;
@@ -153,7 +154,12 @@ function EditExercise() {
           <select
             id="involvedMuscles"
             value={involvedMuscles}
-            onChange={(e) => setInvolvedMuscles(e.target.value)}
+            onChange={(e) =>
+              setInvolvedMuscles(
+                Array.from(e.target.selectedOptions, (option) => option.value)
+              )
+            }
+            multiple
             required
           >
             {musclesList.map((muscle) => (
@@ -162,6 +168,12 @@ function EditExercise() {
               </option>
             ))}
           </select>
+          {/* Mostrar los músculos seleccionados */}
+          <ul>
+            {involvedMuscles.map((muscle, index) => (
+              <li key={index}>{muscle}</li>
+            ))}
+          </ul>
         </div>
         <div>
           <label htmlFor="involvedMusclesImg">
