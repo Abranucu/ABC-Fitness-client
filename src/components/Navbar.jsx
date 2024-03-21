@@ -1,8 +1,13 @@
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import { useContext } from "react";
+import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Offcanvas from "react-bootstrap/Offcanvas";
+import logo from "../assets/ABC-fitness-logo-animado.gif";
 
-function Navbar() {
+function CustomNavbar() {
   const { userRole, loggedUserId } = useContext(AuthContext);
 
   const handleLogout = () => {
@@ -11,45 +16,66 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <NavLink className="nav-link" to="/" exact="true">
-        Home
-      </NavLink>
-      <br />
-      <NavLink className="nav-link" to="/exercises">
-        Ejercicios
-      </NavLink>
-      <br />
-      <NavLink className="nav-link" to="/routines">
-        Rutinas
-      </NavLink>
-      <br />
-      <NavLink className="nav-link" to="/profile">
-        Perfil
-      </NavLink>
-      <br />
-      <NavLink className="nav-link" to={`/routines/user/${loggedUserId}`}>
-        Mis rutinas
-      </NavLink>
-      <br />
-      <NavLink className="nav-link" to={"/create-routine"}>
-        Crear rutina
-      </NavLink>
-      <br />
-      {userRole === "admin" && (
-        <>
-          <NavLink className="nav-link" to="/create-exercise">
-            Crear Ejercicio
-          </NavLink>
-          <br />
-        </>
-      )}
-      <span className="nav-link" onClick={handleLogout}>
-        Logout
-      </span>
-      <br />
-    </nav>
+    <>
+      {[false].map((expand) => (
+        <Navbar
+          key={expand}
+          expand={expand}
+          className="bg-body-tertiary mb-3"
+          sticky="top"
+        >
+          <Container fluid>
+            <Navbar.Brand as={NavLink} to="/">
+              <img
+                src={logo}
+                width="30"
+                height="30"
+                className="d-inline-block align-top"
+                alt="Tu Logo"
+              />
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
+            <Navbar.Offcanvas
+              id={`offcanvasNavbar-expand-${expand}`}
+              aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
+              placement="end"
+            >
+              <Offcanvas.Header closeButton>
+                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
+                  ABC Fitness
+                </Offcanvas.Title>
+              </Offcanvas.Header>
+              <Offcanvas.Body>
+                <Nav className="justify-content-end flex-grow-1 pe-3">
+                  <Nav.Link as={NavLink} to="/profile">
+                    Perfil
+                  </Nav.Link>
+                  <Nav.Link as={NavLink} to="/exercises">
+                    Ejercicios
+                  </Nav.Link>
+                  <Nav.Link as={NavLink} to="/routines">
+                    Rutinas
+                  </Nav.Link>
+                  <Nav.Link as={NavLink} to={`/routines/user/${loggedUserId}`}>
+                    Mis rutinas
+                  </Nav.Link>
+                  <Nav.Link as={NavLink} to="/create-routine">
+                    Crear rutina
+                  </Nav.Link>
+                  {userRole === "admin" && (
+                    <Nav.Link as={NavLink} to="/create-exercise">
+                      Crear Ejercicio
+                    </Nav.Link>
+                  )}
+                  <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                </Nav>
+              </Offcanvas.Body>
+            </Navbar.Offcanvas>
+          </Container>
+        </Navbar>
+      ))}
+    </>
   );
 }
 
-export default Navbar;
+export default CustomNavbar;

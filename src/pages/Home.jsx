@@ -1,7 +1,8 @@
 import { useContext, useState, useEffect } from "react";
+import service from "../services/config.services";
 import { AuthContext } from "../context/auth.context";
 import { useNavigate } from "react-router-dom";
-import service from "../services/config.services";
+import { Button, Col, Image, Spinner, Row, Carousel } from "react-bootstrap";
 import logo from "../assets/ABC-fitness-logo-animado.gif";
 
 const fitnessAdvice = [
@@ -63,16 +64,20 @@ function Home() {
 
   if (loading) {
     return (
-      <div>
-        <p>Cargando...</p>
+      <div className="text-center mt-5">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
       </div>
     );
   }
 
   if (isLoggedIn && !user) {
     return (
-      <div>
-        <p>Cargando...</p>
+      <div className="text-center mt-5">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
       </div>
     );
   }
@@ -80,44 +85,51 @@ function Home() {
   return (
     <div>
       {!isLoggedIn ? (
-        <div>
-          <img
+        <div className="text-center mt-5">
+          <Image
             src={logo}
             alt="Logo de la aplicación"
             onClick={() => {
               navigate("/login");
             }}
+            style={{ cursor: "pointer" }}
           />
         </div>
       ) : (
         <div>
-          <div>
-            <h1>Bienvenido, {user.name}!</h1>
-            <h2>{randomAdvice}</h2>
-            {/* Esto luego meter un carrusel con todos los consejos */}
-          </div>
-          <div>
-            <h1>Mis rutinas</h1>
-            {userRoutines.map((eachRoutine, index) => (
-              <div key={index}>
-                <h2>{eachRoutine.name}</h2>
-                <p>{eachRoutine.description}</p>
-                <button
-                  onClick={() =>
-                    navigate(`/routine-details/${eachRoutine._id}`)
-                  }
-                >
-                  Ver rutina
-                </button>
-              </div>
-            ))}
-            {/* Esto luego meter un carrusel con todos las rutinas */}
-          </div>
-          <div>
-            <h1>Listas de reproducción para motivarte entrenando</h1>
-            <h2>Corred insensatos</h2>
-            {/* Esto luego meter un carrusel con todos las listas de reproducción para motivación de Spotify, investigar como hacerlo */}
-          </div>
+          <Row className="justify-content-center mt-5">
+            <Col md={8} className="text-center">
+              <h1>Bienvenido, {user.name}!</h1>
+              <h2>{randomAdvice}</h2>
+              {/* Esto luego meter un carrusel con todos los consejos */}
+            </Col>
+          </Row>
+          <Row className="justify-content-center mt-5">
+            <Col md={8}>
+              <h1 className="text-center">Mis rutinas</h1>
+              <Carousel>
+                {userRoutines.map((eachRoutine, index) => (
+                  <Carousel.Item key={index}>
+                    <div className="card mb-3" style={{ height: "200px" }}>
+                      <div className="card-body">
+                        <h2>{eachRoutine.name}</h2>
+                        <p>{eachRoutine.description}</p>
+                        <Button
+                          onClick={() =>
+                            navigate(`/routine-details/${eachRoutine._id}`)
+                          }
+                          className="w-50 mx-auto"
+                          style={{ maxWidth: "200px" }}
+                        >
+                          Ver rutina
+                        </Button>
+                      </div>
+                    </div>
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+            </Col>
+          </Row>
         </div>
       )}
     </div>

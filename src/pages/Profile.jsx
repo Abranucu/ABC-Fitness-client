@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { Image, Transformation } from "cloudinary-react";
+import { useState, useEffect } from "react";
 import service from "../services/config.services";
+import { useNavigate } from "react-router-dom";
+import { Form, Button, Col, Row, Image } from "react-bootstrap";
 
 function Profile() {
+  const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [editPasswordMode, setEditPasswordMode] = useState(false);
   const [editEmailMode, setEditEmailMode] = useState(false);
-  const [profilePic, setProfilePic] = useState(null);
+  const [showEditPhoto, setShowEditPhoto] = useState(false);
   const [formData, setFormData] = useState({
+    profilePic: "",
     height: "",
     weight: "",
     currentLevel: "",
@@ -99,31 +103,39 @@ function Profile() {
     }
   };
 
-  const handleProfilePicChange = async (e) => {
-    const file = e.target.files[0]; // Obtenemos el archivo de la imagen seleccionada
+  const handleFileUpload = async (event) => {
+    if (!event.target.files[0]) {
+      return;
+    }
+
+    setIsUploading(true);
+
+    const uploadData = new FormData();
+    uploadData.append("image", event.target.files[0]);
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", "cde8cw2i"); // Reemplaza "YOUR_UPLOAD_PRESET" con tu valor de upload preset
-
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/ddwwfoqzl/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
+      const response = await service.post(
+        "http://localhost:5005/api/upload",
+        uploadData
       );
 
-      if (res.ok) {
-        const data = await res.json();
-        setProfilePic(data.secure_url);
-      } else {
-        console.error("Error uploading profile picture:", res.statusText);
-      }
+      const profilePic = response.data.imageUrl;
+
+      setUserProfile((prevProfile) => ({
+        ...prevProfile,
+        profilePic: profilePic,
+      }));
+
+      setIsUploading(false);
+      setShowEditPhoto(false); // Ocultar el formulario después de cargar la imagen
     } catch (error) {
-      console.error("Error uploading profile picture:", error);
+      console.error("Error uploading image:", error);
+      navigate("/error");
     }
+  };
+
+  const toggleEditPhoto = () => {
+    setShowEditPhoto(!showEditPhoto);
   };
 
   return (
@@ -132,145 +144,174 @@ function Profile() {
         <p>Loading...</p>
       ) : (
         <>
-          <h2>Perfil</h2>
-          <div>
-            {/* Mostrar la foto de perfil */}
-            <img
-              src={formData.profilePic}
-              alt="Foto de perfil"
-              style={{ width: "150px", height: "150px", borderRadius: "50%" }}
-            />
-            {/* Permitir al usuario cambiar la foto de perfil */}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleProfilePicChange}
-            />
-          </div>
-          {!editMode ? (
-            <div>
-              {/* Mostrar detalles del perfil */}
-              <p>Nombre: {userProfile.name}</p>
-              <p>Apellidos: {userProfile.lastName}</p>
-              <p>Email: {userProfile.email}</p>
-              <p>Edad: {userProfile.age}</p>
-              <p>Sexo: {userProfile.sex}</p>
-              <p>Altura: {userProfile.height}</p>
-              <p>Peso: {userProfile.weight}</p>
-              <p>Nivel actual: {userProfile.currentLevel}</p>
-              <p>Objetivo: {userProfile.goal}</p>
-              <button onClick={handleEditClick}>Edit</button>
-            </div>
-          ) : (
-            <>
-              <form onSubmit={handleSubmit}>
-                <label>
-                  Estatura:
-                  <input
-                    type="text"
-                    name="height"
-                    value={formData.height}
-                    onChange={handleChange}
+          <h2>Perfil de {userProfile.name}</h2>
+          <Row className="flex-wrap">
+            <Col md={3} className="mb-3">
+              {userProfile.profilePic ? (
+                <div>
+                  <Image
+                    src={userProfile.profilePic}
+                    alt="Profile Pic"
+                    width={200}
                   />
-                </label>
-                <label>
-                  Peso:
-                  <input
-                    type="text"
-                    name="weight"
-                    value={formData.weight}
-                    onChange={handleChange}
+                </div>
+              ) : null}
+              {!showEditPhoto ? (
+                <Button onClick={toggleEditPhoto}>Editar foto de perfil</Button>
+              ) : (
+                <Form.Group controlId="formFile" className="mb-3">
+                  <Form.Label>Editar foto de perfil:</Form.Label>
+                  <Form.Control
+                    type="file"
+                    onChange={handleFileUpload}
+                    disabled={isUploading}
                   />
-                </label>
-                <label>
-                  Nivel actual:
-                  <select
-                    name="currentLevel"
-                    value={formData.currentLevel}
-                    onChange={handleChange}
-                  >
-                    <option value="Bajo">Bajo</option>
-                    <option value="Intermedio">Intermedio</option>
-                    <option value="Alto">Alto</option>
-                  </select>
-                </label>
-                <label>
-                  Objetivo:
-                  <select
-                    name="goal"
-                    value={formData.goal}
-                    onChange={handleChange}
-                  >
-                    <option value="Perdida de grasa">Perdida de grasa</option>
-                    <option value="Mantenimiento">Mantenimiento</option>
-                    <option value="Ganancia muscular">Ganancia muscular</option>
-                  </select>
-                </label>
-                <button type="submit">Guardar</button>
-              </form>
-              <button onClick={() => setEditPasswordMode(true)}>
-                Cambiar contraseña
-              </button>
-              <button onClick={() => setEditEmailMode(true)}>
-                Cambiar email
-              </button>
-            </>
-          )}
-          {editPasswordMode && (
-            <form onSubmit={handlePasswordChange}>
-              <label>
-                Contraseña actual:
-                <input
-                  type="password"
-                  name="currentPassword"
-                  value=""
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Nueva contraseña:
-                <input
-                  type="password"
-                  name="newPassword"
-                  value={formData.newPassword}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Repetir contraseña:
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                />
-              </label>
-              <button type="submit">Cambiar contraseña</button>
-            </form>
-          )}
-          {editEmailMode && (
-            <form onSubmit={handleEmailChange}>
-              <label>
-                Nuevo email:
-                <input
-                  type="email"
-                  name="newEmail"
-                  value=""
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Current Password:
-                <input
-                  type="password"
-                  name="currentPassword"
-                  value=""
-                  onChange={handleChange}
-                />
-              </label>
-              <button type="submit">Cambiar email</button>
-            </form>
-          )}
+                </Form.Group>
+              )}
+              {isUploading ? <p>Subiendo imagen...</p> : null}
+            </Col>
+            <Col md={9} className="mb-3">
+              {!editMode ? (
+                <div>
+                  <p>Nombre: {userProfile.name}</p>
+                  <p>Apellidos: {userProfile.lastName}</p>
+                  <p>Email: {userProfile.email}</p>
+                  <p>Edad: {userProfile.age}</p>
+                  <p>Sexo: {userProfile.sex}</p>
+                  <p>Altura: {userProfile.height}</p>
+                  <p>Peso: {userProfile.weight}</p>
+                  <p>Nivel actual: {userProfile.currentLevel}</p>
+                  <p>Objetivo: {userProfile.goal}</p>
+                  <Button onClick={handleEditClick}>Editar</Button>
+                </div>
+              ) : (
+                <Form onSubmit={handleSubmit} className="mb-3">
+                  <Form.Group controlId="formHeight" className="mb-3">
+                    <Form.Label>Estatura:</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="height"
+                      value={formData.height}
+                      onChange={handleChange}
+                      className="mb-3"
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formWeight">
+                    <Form.Label>Peso:</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="weight"
+                      value={formData.weight}
+                      onChange={handleChange}
+                      className="mb-3"
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formCurrentLevel" className="mb-3">
+                    <Form.Label>Nivel actual:</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="currentLevel"
+                      value={formData.currentLevel}
+                      onChange={handleChange}
+                      className="mb-3"
+                    >
+                      <option value="Bajo">Bajo</option>
+                      <option value="Intermedio">Intermedio</option>
+                      <option value="Alto">Alto</option>
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="formGoal" className="mb-3">
+                    <Form.Label>Objetivo:</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="goal"
+                      value={formData.goal}
+                      onChange={handleChange}
+                      className="mb-3"
+                    >
+                      <option value="Perdida de grasa">Perdida de grasa</option>
+                      <option value="Mantenimiento">Mantenimiento</option>
+                      <option value="Ganancia muscular">
+                        Ganancia muscular
+                      </option>
+                    </Form.Control>
+                  </Form.Group>
+                  <div className="mb-3">
+                    <Button type="submit" className="w-100 mb-3">
+                      Guardar
+                    </Button>
+                    <br />
+                    <Button
+                      onClick={() => setEditPasswordMode(true)}
+                      className="w-100 mb-3"
+                    >
+                      Cambiar contraseña
+                    </Button>
+                    <Button
+                      onClick={() => setEditEmailMode(true)}
+                      className="w-100 mb-3"
+                    >
+                      Cambiar email
+                    </Button>
+                  </div>
+                </Form>
+              )}
+              {editPasswordMode && (
+                <Form onSubmit={handlePasswordChange} className="mb-3">
+                  <Form.Group controlId="formCurrentPassword" className="mb-3">
+                    <Form.Label>Contraseña actual:</Form.Label>
+                    <Form.Control
+                      type="password"
+                      name="currentPassword"
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formNewPassword" className="mb-3">
+                    <Form.Label>Nueva contraseña:</Form.Label>
+                    <Form.Control
+                      type="password"
+                      name="newPassword"
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formConfirmPassword" className="mb-3">
+                    <Form.Label>Repetir contraseña:</Form.Label>
+                    <Form.Control
+                      type="password"
+                      name="confirmPassword"
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                  <Button type="submit" className="w-100 mb-3">
+                    Cambiar contraseña
+                  </Button>
+                </Form>
+              )}
+              {editEmailMode && (
+                <Form onSubmit={handleEmailChange} className="mb-3">
+                  <Form.Group controlId="formNewEmail" className="mb-3">
+                    <Form.Label>Nuevo email:</Form.Label>
+                    <Form.Control
+                      type="email"
+                      name="newEmail"
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formCurrentPassword" className="mb-3">
+                    <Form.Label>Contraseña actual:</Form.Label>
+                    <Form.Control
+                      type="password"
+                      name="currentPassword"
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                  <Button type="submit" className="w-100 mb-3">
+                    Cambiar email
+                  </Button>
+                </Form>
+              )}
+            </Col>
+          </Row>
         </>
       )}
     </div>

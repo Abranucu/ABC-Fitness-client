@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import service from "../services/config.services";
-import Search from "../components/Search";
+import { Form, Button, Col, Row } from "react-bootstrap";
 
 function EditRoutine() {
   const { routineId } = useParams();
@@ -13,7 +13,6 @@ function EditRoutine() {
   const [repetitions, setRepetitions] = useState([]);
   const [weight, setWeight] = useState([]);
   const [rest, setRest] = useState([]);
-  const [selectedExerciseId, setSelectedExerciseId] = useState(null);
   const [errMessage, setErrMessage] = useState(null);
 
   useEffect(() => {
@@ -61,18 +60,19 @@ function EditRoutine() {
     routineToEdit();
   }, [routineId]);
 
-  const handleExerciseSelect = (exerciseId) => {
-    setSelectedExerciseId(exerciseId);
+  const handleAddMyExercise = () => {
+    navigate(`/create-myexercise/${routineId}`);
   };
-
-  const handleAddMyExercise = () => {};
 
   const handleDeleteMyExercise = async (e) => {
     const myExerciseId = e;
     try {
       await service.delete(
-        "/routines/:routineId/exercises/:exerciseId",
+        `/routines/${routineId}/exercises/${myExerciseId}`,
         myExerciseId
+      );
+      setExercises((prevExercises) =>
+        prevExercises.filter((exercise) => exercise._id !== myExerciseId)
       );
     } catch (err) {
       console.log(err);
@@ -170,97 +170,159 @@ function EditRoutine() {
   return (
     <div>
       <h2>Editar rutina</h2>
-      <form onSubmit={handleEditRoutine}>
-        <div>
-          <label htmlFor="name">Nombre:</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="description">Descripción:</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <h3>Ejercicios:</h3>
-          <Search onExerciseSelect={handleExerciseSelect} />
-          <button onClick={handleAddMyExercise}>Agregar</button>
-          {exercises.length > 0 ? (
-            <ul>
-              {exercises.map((exercise, index) => (
-                <li key={index}>
-                  <div>
-                    <strong>Nombre:</strong> {exercise.exercise.name}
-                  </div>
-                  <div>
-                    <label htmlFor={`sets-${index}`}>Sets:</label>
-                    <input
-                      type="text"
-                      id={`sets-${index}`}
-                      value={sets[index] || ""}
-                      onChange={(e) => handleSetsChange(e, index)}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor={`repetitions-${index}`}>Repetitions:</label>
-                    <input
-                      type="text"
-                      id={`repetitions-${index}`}
-                      value={repetitions[index] || ""}
-                      onChange={(e) => handleRepetitionsChange(e, index)}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor={`rest-${index}`}>Rest:</label>
-                    <input
-                      type="text"
-                      id={`rest-${index}`}
-                      value={rest[index] || ""}
-                      onChange={(e) => handleRestChange(e, index)}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor={`weight-${index}`}>Weight:</label>
-                    <input
-                      type="text"
-                      id={`weight-${index}`}
-                      value={weight[index] || ""}
-                      onChange={(e) => handleWeightChange(e, index)}
-                    />
-                  </div>
-                  <div>
-                    <button
-                      type="button"
+      <Form onSubmit={handleEditRoutine}>
+        <Form.Group as={Row} controlId="formName" className="m-2">
+          <Form.Label column sm="2">
+            Nombre:
+          </Form.Label>
+          <Col sm="10">
+            <Form.Control
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} controlId="formDescription" className="m-2">
+          <Form.Label column sm="2">
+            Descripción:
+          </Form.Label>
+          <Col sm="10">
+            <Form.Control
+              as="textarea"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} controlId="formExercises" className="m-2">
+          <Col sm="10">
+            <Button onClick={handleAddMyExercise} className="m-2">
+              Agregar Ejercicio
+            </Button>
+          </Col>
+          <Form.Label column sm="2">
+            <h3>Ejercicios:</h3>
+          </Form.Label>
+          <Col sm="10">
+            {exercises.length > 0 ? (
+              <ul className="list-unstyled">
+                {exercises.map((exercise, index) => (
+                  <li key={index} className="m-2">
+                    <Form.Group as={Row} controlId={`exercise-${index}`}>
+                      <Form.Label column sm="2">
+                        Nombre:
+                      </Form.Label>
+                      <Col sm="10">
+                        <Form.Control
+                          plaintext
+                          readOnly
+                          defaultValue={exercise.exercise.name}
+                        />
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Row}
+                      controlId={`sets-${index}`}
+                      className="my-1"
+                    >
+                      <Form.Label column sm="2">
+                        Sets:
+                      </Form.Label>
+                      <Col sm="10">
+                        <Form.Control
+                          type="text"
+                          value={sets[index] || ""}
+                          onChange={(e) => handleSetsChange(e, index)}
+                        />
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Row}
+                      controlId={`repetitions-${index}`}
+                      className="my-1"
+                    >
+                      <Form.Label column sm="2">
+                        Repetitions:
+                      </Form.Label>
+                      <Col sm="10">
+                        <Form.Control
+                          type="text"
+                          value={repetitions[index] || ""}
+                          onChange={(e) => handleRepetitionsChange(e, index)}
+                        />
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Row}
+                      controlId={`rest-${index}`}
+                      className="my-1"
+                    >
+                      <Form.Label column sm="2">
+                        Rest:
+                      </Form.Label>
+                      <Col sm="10">
+                        <Form.Control
+                          type="text"
+                          value={rest[index] || ""}
+                          onChange={(e) => handleRestChange(e, index)}
+                        />
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Row}
+                      controlId={`weight-${index}`}
+                      className="my-1"
+                    >
+                      <Form.Label column sm="2">
+                        Weight:
+                      </Form.Label>
+                      <Col sm="10">
+                        <Form.Control
+                          type="text"
+                          value={weight[index] || ""}
+                          onChange={(e) => handleWeightChange(e, index)}
+                        />
+                      </Col>
+                    </Form.Group>
+
+                    <Button
+                      variant="primary"
+                      className="m-2" // Añadir margen por los cuatro lados
                       onClick={handleEditMyExercise(exercise._id, index)}
                     >
                       Editar
-                    </button>
-                    <button
-                      type="button"
+                    </Button>
+                    <Button
+                      variant="danger"
+                      className="m-2" // Añadir margen por los cuatro lados
                       onClick={() => handleDeleteMyExercise(exercise._id)}
                     >
                       Eliminar
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No hay ejercicios disponibles.</p>
-          )}
-        </div>
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No hay ejercicios disponibles.</p>
+            )}
+          </Col>
+        </Form.Group>
+
         {errMessage && <p>{errMessage}</p>}
-        <button type="submit">Editar</button>
-      </form>
+
+        <Button type="submit" className="mt-3">
+          Editar
+        </Button>
+      </Form>
     </div>
   );
 }

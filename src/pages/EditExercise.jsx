@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Form, Button } from "react-bootstrap";
 import service from "../services/config.services";
 
 const musclesList = [
@@ -111,48 +112,46 @@ function EditExercise() {
   return (
     <div>
       <h2>Editar ejercicio</h2>
-      <form onSubmit={handleEditExercise}>
-        <div>
-          <label htmlFor="name">Nombre:</label>
-          <input
+      <Form onSubmit={handleEditExercise}>
+        <Form.Group controlId="name">
+          <Form.Label>Nombre:</Form.Label>
+          <Form.Control
             type="text"
-            id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label htmlFor="initialPosition">Posición inicial:</label>
-          <textarea
-            id="initialPosition"
+        </Form.Group>
+        <Form.Group controlId="initialPosition">
+          <Form.Label>Posición inicial:</Form.Label>
+          <Form.Control
+            as="textarea"
             value={initialPosition}
             onChange={(e) => setInitialPosition(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label htmlFor="execution">Ejecución:</label>
-          <textarea
-            id="execution"
+        </Form.Group>
+        <Form.Group controlId="execution">
+          <Form.Label>Ejecución:</Form.Label>
+          <Form.Control
+            as="textarea"
             value={execution}
             onChange={(e) => setExecution(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label htmlFor="advice">Consejo:</label>
-          <textarea
-            id="advice"
+        </Form.Group>
+        <Form.Group controlId="advice">
+          <Form.Label>Consejo:</Form.Label>
+          <Form.Control
+            as="textarea"
             value={advice}
             onChange={(e) => setAdvice(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label htmlFor="involvedMuscles">Músculos involucrados:</label>
-          <select
-            id="involvedMuscles"
+        </Form.Group>
+        <Form.Group controlId="involvedMuscles">
+          <Form.Label>Músculos involucrados:</Form.Label>
+          <Form.Select
             value={involvedMuscles}
             onChange={(e) =>
               setInvolvedMuscles(
@@ -167,49 +166,46 @@ function EditExercise() {
                 {muscle}
               </option>
             ))}
-          </select>
+          </Form.Select>
           {/* Mostrar los músculos seleccionados */}
           <ul>
             {involvedMuscles.map((muscle, index) => (
               <li key={index}>{muscle}</li>
             ))}
           </ul>
-        </div>
-        <div>
-          <label htmlFor="involvedMusclesImg">
-            Imagen músculos involucrados:
-          </label>
-          <input
+        </Form.Group>
+        <Form.Group controlId="involvedMusclesImg">
+          <Form.Label>Imagen músculos involucrados:</Form.Label>
+          <Form.Control
             type="text"
-            id="involvedMusclesImg"
             value={involvedMusclesImg}
             onChange={(e) => setInvolvedMusclesImg(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label htmlFor="img">Imagen ejercicio:</label>
-          <input
+        </Form.Group>
+        <Form.Group controlId="img">
+          <Form.Label>Imagen ejercicio:</Form.Label>
+          <Form.Control
             type="text"
-            id="img"
             value={img}
             onChange={(e) => setImg(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label htmlFor="video">Video:</label>
-          <input
+        </Form.Group>
+        <Form.Group controlId="video">
+          <Form.Label>Video:</Form.Label>
+          <Form.Control
             type="text"
-            id="video"
             value={video}
             onChange={(e) => setVideo(e.target.value)}
             required
           />
-        </div>
+        </Form.Group>
         {errMessage && <p>{errMessage}</p>}
-        <button type="submit">Editar</button>
-      </form>
+        <Button variant="primary" type="submit">
+          Editar
+        </Button>
+      </Form>
     </div>
   );
 }

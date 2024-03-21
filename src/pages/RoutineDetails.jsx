@@ -1,12 +1,13 @@
 import { useState, useEffect, useContext } from "react";
-import service from "../services/config.services";
+import { Card, Button, Spinner } from "react-bootstrap"; // Importamos componentes de React Bootstrap
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
+import service from "../services/config.services";
 
 function RoutineDetails() {
   const { routineId } = useParams();
-  const [routine, setRoutine] = useState("");
+  const [routine, setRoutine] = useState({});
   const [exercises, setExercises] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -42,7 +43,13 @@ function RoutineDetails() {
   };
 
   if (loading) {
-    return <p>Cargando...</p>;
+    return (
+      <div className="d-flex justify-content-center align-items-center">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </Spinner>
+      </div>
+    );
   }
 
   return (
@@ -50,28 +57,33 @@ function RoutineDetails() {
       <h1>{routine.name}</h1>
       <p>{routine.description}</p>
       {exercises.map((eachExercise, index) => (
-        <div key={index}>
-          <img src={eachExercise.exercise.img} alt={eachExercise.name} />
-          <h2>{eachExercise.exercise.name}</h2>
-          <p>Series: {eachExercise.sets}</p>
-          <p>Repeticiones: {eachExercise.repetitions}</p>
-          <p>Peso: {eachExercise.weight}Kg</p>
-          <p>Descanso entre series: {eachExercise.rest} segundos</p>
-          <button
-            onClick={() => navigate(`/exercise-details/${eachExercise._id}`)}
-          >
-            Ver ejercicio
-          </button>
-        </div>
+        <Card key={index} className="mb-3">
+          <Card.Body>
+            <Card.Img src={eachExercise.exercise.img} alt={eachExercise.name} />
+            <Card.Title>{eachExercise.exercise.name}</Card.Title>
+            <Card.Text>Series: {eachExercise.sets}</Card.Text>
+            <Card.Text>Repeticiones: {eachExercise.repetitions}</Card.Text>
+            <Card.Text>Peso: {eachExercise.weight} Kg</Card.Text>
+            <Card.Text>
+              Descanso entre series: {eachExercise.rest} segundos
+            </Card.Text>
+            <Button
+              variant="primary"
+              onClick={() => navigate(`/exercise-details/${eachExercise._id}`)}
+            >
+              Ver ejercicio
+            </Button>
+          </Card.Body>
+        </Card>
       ))}
-      <div>
-        {loggedUserId === routine.user && (
-          <div>
-            <button onClick={handleEdit}>Editar</button>
-            <button onClick={handleDelete}>Borrar</button>
-          </div>
-        )}
-      </div>
+      {loggedUserId === routine.user && (
+        <div>
+          <Button onClick={handleEdit}>Editar</Button>
+          <Button variant="danger" onClick={handleDelete}>
+            Borrar
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

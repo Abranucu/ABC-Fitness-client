@@ -1,13 +1,14 @@
-import service from "../services/config.services";
-import { useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
+import { Button, Card, Spinner } from "react-bootstrap"; // Importa los componentes necesarios de React Bootstrap
 import { AuthContext } from "../context/auth.context";
+import { useNavigate } from "react-router-dom";
+import service from "../services/config.services";
 
 function Exercises() {
-  const { isLoggedIn, loggedUserId } = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [exercises, setExercises] = useState(null);
+  const [exercises, setExercises] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,27 +32,40 @@ function Exercises() {
 
   if (loading) {
     return (
-      <div>
-        <p>Cargando...</p>
+      <div className="text-center">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </Spinner>
       </div>
     );
   }
 
   return (
     <div>
-      <h1>Todos los ejercicios</h1>
-      {exercises.map((eachExercise, index) => (
-        <div key={index}>
-          <img src={eachExercise.img} alt={eachExercise.name} />
-          <h2>{eachExercise.name}</h2>
-          <p>{eachExercise.involvedMuscles}</p>
-          <button
-            onClick={() => navigate(`/exercise-details/${eachExercise._id}`)}
-          >
-            Ver ejercicio
-          </button>
-        </div>
-      ))}
+      <h1 className="text-center mb-4">Todos los ejercicios</h1>
+      <div className="d-flex flex-wrap justify-content-around">
+        {exercises.map((eachExercise, index) => (
+          <Card key={index} style={{ width: "18rem", margin: "2px" }}>
+            <Card.Img
+              variant="top"
+              src={eachExercise.img}
+              alt={eachExercise.name}
+            />
+            <Card.Body>
+              <Card.Title>{eachExercise.name}</Card.Title>
+              <Card.Text>{eachExercise.involvedMuscles}</Card.Text>
+              <Button
+                onClick={() =>
+                  navigate(`/exercise-details/${eachExercise._id}`)
+                }
+                variant="primary"
+              >
+                Ver ejercicio
+              </Button>
+            </Card.Body>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

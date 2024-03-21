@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Routes, Route, useLocation } from "react-router";
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // Pages
 import Home from "./pages/Home";
@@ -15,6 +16,7 @@ import ExerciseDetails from "./pages/ExerciseDetails";
 import EditRoutine from "./pages/EditRoutine";
 import EditExercise from "./pages/EditExercise";
 import CreateRoutine from "./pages/CreateRoutine";
+import CreateMyExercise from "./pages/CreateMyExercise";
 import CreateExercise from "./pages/CreateExercise";
 import Error from "./pages/err/Error";
 import NotFound from "./pages/err/NotFound";
@@ -82,6 +84,14 @@ function App() {
           element={
             <AuthRequest>
               <CreateRoutine />
+            </AuthRequest>
+          }
+        />
+        <Route
+          path="/create-myexercise/:routineId"
+          element={
+            <AuthRequest>
+              <CreateMyExercise />
             </AuthRequest>
           }
         />
