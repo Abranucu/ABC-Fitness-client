@@ -18,10 +18,11 @@ function ExerciseDetails() {
       try {
         const res = await service.get(`/exercises/${exerciseId}`);
         setExercise(res.data);
+        console.log(res.data);
         setLoading(false);
       } catch (err) {
         console.log(err);
-        setLoading(false);
+        navigate("/error");
       }
     };
 
