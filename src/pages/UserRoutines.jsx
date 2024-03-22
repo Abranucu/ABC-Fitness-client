@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/auth.context";
 import { useNavigate } from "react-router-dom";
-import { Card, Button, Spinner } from "react-bootstrap"; // Importamos componentes de React Bootstrap
+import { Card, Button, Spinner } from "react-bootstrap";
 import service from "../services/config.services";
 
 function UserRoutines() {
@@ -44,21 +44,23 @@ function UserRoutines() {
 
   return (
     <div>
-      <h1>Mis rutinas</h1>
-      {userRoutines.map((eachRoutine, index) => (
-        <Card key={index} className="mb-3">
-          <Card.Body>
-            <Card.Title>{eachRoutine.name}</Card.Title>
-            <Card.Text>{eachRoutine.description}</Card.Text>
-            <Button
-              variant="primary"
-              onClick={() => navigate(`/routine-details/${eachRoutine._id}`)}
-            >
-              Ver rutina
-            </Button>
-          </Card.Body>
-        </Card>
-      ))}
+      <h1 className="text-center mb-4">Mis rutinas</h1>
+      <div className="d-flex flex-wrap justify-content-around">
+        {userRoutines.map((eachRoutine, index) => (
+          <Card key={index} style={{ width: "18rem", margin: "2px" }}>
+            <Card.Body>
+              <Card.Title>{eachRoutine.name}</Card.Title>
+              <Card.Text>{eachRoutine.description}</Card.Text>
+              <Button
+                onClick={() => navigate(`/routine-details/${eachRoutine._id}`)}
+                variant="primary"
+              >
+                Ver rutina
+              </Button>
+            </Card.Body>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

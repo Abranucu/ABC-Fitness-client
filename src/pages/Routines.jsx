@@ -42,20 +42,23 @@ function Routines() {
 
   return (
     <div>
-      {routines.map((eachRoutine, index) => (
-        <Card key={index} className="mb-3">
-          <Card.Body>
-            <Card.Title>{eachRoutine.name}</Card.Title>
-            <Card.Text>{eachRoutine.description}</Card.Text>
-            <Button
-              variant="primary"
-              onClick={() => navigate(`/routine-details/${eachRoutine._id}`)}
-            >
-              Ver rutina
-            </Button>
-          </Card.Body>
-        </Card>
-      ))}
+      <h1 className="text-center mb-4">Todos las rutinas</h1>
+      <div className="d-flex flex-wrap justify-content-around">
+        {routines.map((eachRoutine, index) => (
+          <Card key={index} style={{ width: "18rem", margin: "2px" }}>
+            <Card.Body>
+              <Card.Title>{eachRoutine.name}</Card.Title>
+              <Card.Text>{eachRoutine.description}</Card.Text>
+              <Button
+                onClick={() => navigate(`/routine-details/${eachRoutine._id}`)}
+                variant="primary"
+              >
+                Ver rutina
+              </Button>
+            </Card.Body>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

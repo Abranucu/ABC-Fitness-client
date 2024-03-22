@@ -59,7 +59,15 @@ function RoutineDetails() {
       {exercises.map((eachExercise, index) => (
         <Card key={index} className="mb-3">
           <Card.Body>
-            <Card.Img src={eachExercise.exercise.img} alt={eachExercise.name} />
+            <div
+              style={{ maxWidth: "500px", maxWidth: "80%", margin: "0 auto" }}
+            >
+              <Card.Img
+                src={eachExercise.exercise.img}
+                alt={eachExercise.name}
+                style={{ width: "100%", height: "auto" }}
+              />
+            </div>
             <Card.Title>{eachExercise.exercise.name}</Card.Title>
             <Card.Text>Series: {eachExercise.sets}</Card.Text>
             <Card.Text>Repeticiones: {eachExercise.repetitions}</Card.Text>

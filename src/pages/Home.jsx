@@ -92,7 +92,7 @@ function Home() {
             onClick={() => {
               navigate("/login");
             }}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", maxWidth: "80%" }}
           />
         </div>
       ) : (

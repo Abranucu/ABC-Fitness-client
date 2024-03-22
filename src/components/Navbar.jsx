@@ -38,8 +38,8 @@ function CustomNavbar() {
             <Navbar.Brand as={NavLink} to="/">
               <img
                 src={isHovered ? logoAnimado : logo}
-                width="30"
-                height="30"
+                width="50"
+                height="50"
                 className="d-inline-block align-top"
                 alt="Tu Logo"
                 onMouseEnter={handleMouseEnter}
