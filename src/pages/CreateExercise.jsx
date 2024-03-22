@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import service from "../services/config.services";
 
@@ -83,93 +83,99 @@ function CreateRExercise() {
   };
 
   return (
-    <div>
-      <h2>Crear ejercicio</h2>
-      <Form onSubmit={handleCreateExercise}>
-        <Form.Group controlId="name">
-          <Form.Label>Nombre:</Form.Label>
-          <Form.Control
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="initialPosition">
-          <Form.Label>Posición inicial:</Form.Label>
-          <Form.Control
-            as="textarea"
-            value={initialPosition}
-            onChange={(e) => setInitialPosition(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="execution">
-          <Form.Label>Ejecución:</Form.Label>
-          <Form.Control
-            as="textarea"
-            value={execution}
-            onChange={(e) => setExecution(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="advice">
-          <Form.Label>Consejo:</Form.Label>
-          <Form.Control
-            as="textarea"
-            value={advice}
-            onChange={(e) => setAdvice(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="involvedMuscles">
-          <Form.Label>Músculos involucrados:</Form.Label>
-          <Form.Control
-            as="select"
-            value={involvedMuscles}
-            onChange={(e) => setInvolvedMuscles(e.target.value)}
-            required
-          >
-            {musclesList.map((muscle) => (
-              <option key={muscle} value={muscle}>
-                {muscle}
-              </option>
-            ))}
-          </Form.Control>
-        </Form.Group>
-        <Form.Group controlId="involvedMusclesImg">
-          <Form.Label>Imagen músculos involucrados:</Form.Label>
-          <Form.Control
-            type="text"
-            value={involvedMusclesImg}
-            onChange={(e) => setInvolvedMusclesImg(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="img">
-          <Form.Label>Imagen ejercicio:</Form.Label>
-          <Form.Control
-            type="text"
-            value={img}
-            onChange={(e) => setImg(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="video">
-          <Form.Label>Video:</Form.Label>
-          <Form.Control
-            type="text"
-            value={video}
-            onChange={(e) => setVideo(e.target.value)}
-            required
-          />
-        </Form.Group>
-        {errMessage && <p>{errMessage}</p>}
-        <Button variant="primary" type="submit">
-          Crear
-        </Button>
-      </Form>
-    </div>
+    <Container className="my-5">
+      <Row className="justify-content-center">
+        <Col md={8}>
+          <h2 className="mb-4 text-center">Crear ejercicio</h2>
+          <Form onSubmit={handleCreateExercise}>
+            <Form.Group controlId="name">
+              <Form.Label>Nombre:</Form.Label>
+              <Form.Control
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="initialPosition">
+              <Form.Label>Posición inicial:</Form.Label>
+              <Form.Control
+                as="textarea"
+                value={initialPosition}
+                onChange={(e) => setInitialPosition(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="execution">
+              <Form.Label>Ejecución:</Form.Label>
+              <Form.Control
+                as="textarea"
+                value={execution}
+                onChange={(e) => setExecution(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="advice">
+              <Form.Label>Consejo:</Form.Label>
+              <Form.Control
+                as="textarea"
+                value={advice}
+                onChange={(e) => setAdvice(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="involvedMuscles">
+              <Form.Label>Músculos involucrados:</Form.Label>
+              <Form.Control
+                as="select"
+                value={involvedMuscles}
+                onChange={(e) => setInvolvedMuscles(e.target.value)}
+                required
+              >
+                {musclesList.map((muscle) => (
+                  <option key={muscle} value={muscle}>
+                    {muscle}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="involvedMusclesImg">
+              <Form.Label>Imagen músculos involucrados:</Form.Label>
+              <Form.Control
+                type="text"
+                value={involvedMusclesImg}
+                onChange={(e) => setInvolvedMusclesImg(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="img">
+              <Form.Label>Imagen ejercicio:</Form.Label>
+              <Form.Control
+                type="text"
+                value={img}
+                onChange={(e) => setImg(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="video">
+              <Form.Label>Video:</Form.Label>
+              <Form.Control
+                type="text"
+                value={video}
+                onChange={(e) => setVideo(e.target.value)}
+                required
+              />
+            </Form.Group>
+            {errMessage && <p className="text-danger">{errMessage}</p>}
+            <div className="text-center">
+              <Button variant="primary" type="submit">
+                Crear
+              </Button>
+            </div>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
