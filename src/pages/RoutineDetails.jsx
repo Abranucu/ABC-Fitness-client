@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Card, Button, Spinner } from "react-bootstrap"; // Importamos componentes de React Bootstrap
+import { Card, Button, Spinner } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
@@ -53,41 +53,45 @@ function RoutineDetails() {
   }
 
   return (
-    <div>
+    <div className="text-center">
       <h1>{routine.name}</h1>
       <p>{routine.description}</p>
-      {exercises.map((eachExercise, index) => (
-        <Card key={index} className="mb-3">
-          <Card.Body>
-            <div
-              style={{ maxWidth: "500px", maxWidth: "80%", margin: "0 auto" }}
-            >
-              <Card.Img
-                src={eachExercise.exercise.img}
-                alt={eachExercise.name}
-                style={{ width: "100%", height: "auto" }}
-              />
-            </div>
-            <Card.Title>{eachExercise.exercise.name}</Card.Title>
-            <Card.Text>Series: {eachExercise.sets}</Card.Text>
-            <Card.Text>Repeticiones: {eachExercise.repetitions}</Card.Text>
-            <Card.Text>Peso: {eachExercise.weight} Kg</Card.Text>
-            <Card.Text>
-              Descanso entre series: {eachExercise.rest} segundos
-            </Card.Text>
-            <Button
-              variant="primary"
-              onClick={() => navigate(`/exercise-details/${eachExercise._id}`)}
-            >
-              Ver ejercicio
-            </Button>
-          </Card.Body>
-        </Card>
-      ))}
+      <div className="d-flex flex-wrap justify-content-around">
+        {exercises.map((eachExercise, index) => (
+          <Card key={index} style={{ width: "18rem", margin: "2px" }}>
+            <Card.Body className="text-center">
+              <div style={{ maxWidth: "200px", margin: "0 auto" }}>
+                <Card.Img
+                  src={eachExercise.exercise.img}
+                  alt={eachExercise.name}
+                  style={{ width: "100%", height: "auto" }}
+                />
+              </div>
+              <Card.Title>{eachExercise.exercise.name}</Card.Title>
+              <Card.Text>Series: {eachExercise.sets}</Card.Text>
+              <Card.Text>Repeticiones: {eachExercise.repetitions}</Card.Text>
+              <Card.Text>Peso: {eachExercise.weight} Kg</Card.Text>
+              <Card.Text>
+                Descanso entre series: {eachExercise.rest} segundos
+              </Card.Text>
+              <Button
+                variant="primary"
+                onClick={() =>
+                  navigate(`/exercise-details/${eachExercise._id}`)
+                }
+              >
+                Ver ejercicio
+              </Button>
+            </Card.Body>
+          </Card>
+        ))}
+      </div>
       {loggedUserId === routine.user && (
-        <div>
-          <Button onClick={handleEdit}>Editar</Button>
-          <Button variant="danger" onClick={handleDelete}>
+        <div className="text-center">
+          <Button onClick={handleEdit} className="m-2">
+            Editar
+          </Button>
+          <Button variant="danger" onClick={handleDelete} className="m-2">
             Borrar
           </Button>
         </div>

@@ -168,160 +168,121 @@ function EditRoutine() {
   };
 
   return (
-    <div>
-      <h2>Editar rutina</h2>
+    <div className="container">
+      <h2 className="text-center mb-4">Editar rutina</h2>
       <Form onSubmit={handleEditRoutine}>
-        <Form.Group as={Row} controlId="formName" className="m-2">
-          <Form.Label column sm="2">
-            Nombre:
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </Col>
+        <Form.Group controlId="formName" className="mb-3">
+          <Form.Label>Nombre:</Form.Label>
+          <Form.Control
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
         </Form.Group>
 
-        <Form.Group as={Row} controlId="formDescription" className="m-2">
-          <Form.Label column sm="2">
-            Descripción:
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control
-              as="textarea"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </Col>
+        <Form.Group controlId="formDescription" className="mb-3">
+          <Form.Label>Descripción:</Form.Label>
+          <Form.Control
+            as="textarea"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
         </Form.Group>
 
-        <Form.Group as={Row} controlId="formExercises" className="m-2">
-          <Col sm="10">
-            <Button onClick={handleAddMyExercise} className="m-2">
-              Agregar Ejercicio
-            </Button>
-          </Col>
-          <Form.Label column sm="2">
-            <h3>Ejercicios:</h3>
-          </Form.Label>
-          <Col sm="10">
-            {exercises.length > 0 ? (
-              <ul className="list-unstyled">
-                {exercises.map((exercise, index) => (
-                  <li key={index} className="m-2">
-                    <Form.Group as={Row} controlId={`exercise-${index}`}>
-                      <Form.Label column sm="2">
-                        Nombre:
-                      </Form.Label>
-                      <Col sm="10">
-                        <Form.Control
-                          plaintext
-                          readOnly
-                          defaultValue={exercise.exercise.name}
-                        />
-                      </Col>
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Row}
-                      controlId={`sets-${index}`}
-                      className="my-1"
-                    >
-                      <Form.Label column sm="2">
-                        Sets:
-                      </Form.Label>
-                      <Col sm="10">
-                        <Form.Control
-                          type="text"
-                          value={sets[index] || ""}
-                          onChange={(e) => handleSetsChange(e, index)}
-                        />
-                      </Col>
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Row}
-                      controlId={`repetitions-${index}`}
-                      className="my-1"
-                    >
-                      <Form.Label column sm="2">
-                        Repetitions:
-                      </Form.Label>
-                      <Col sm="10">
-                        <Form.Control
-                          type="text"
-                          value={repetitions[index] || ""}
-                          onChange={(e) => handleRepetitionsChange(e, index)}
-                        />
-                      </Col>
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Row}
-                      controlId={`rest-${index}`}
-                      className="my-1"
-                    >
-                      <Form.Label column sm="2">
-                        Rest:
-                      </Form.Label>
-                      <Col sm="10">
-                        <Form.Control
-                          type="text"
-                          value={rest[index] || ""}
-                          onChange={(e) => handleRestChange(e, index)}
-                        />
-                      </Col>
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Row}
-                      controlId={`weight-${index}`}
-                      className="my-1"
-                    >
-                      <Form.Label column sm="2">
-                        Weight:
-                      </Form.Label>
-                      <Col sm="10">
-                        <Form.Control
-                          type="text"
-                          value={weight[index] || ""}
-                          onChange={(e) => handleWeightChange(e, index)}
-                        />
-                      </Col>
-                    </Form.Group>
-
-                    <Button
-                      variant="primary"
-                      className="m-2" // Añadir margen por los cuatro lados
-                      onClick={handleEditMyExercise(exercise._id, index)}
-                    >
-                      Editar
-                    </Button>
-                    <Button
-                      variant="danger"
-                      className="m-2" // Añadir margen por los cuatro lados
-                      onClick={() => handleDeleteMyExercise(exercise._id)}
-                    >
-                      Eliminar
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No hay ejercicios disponibles.</p>
-            )}
-          </Col>
-        </Form.Group>
-
-        {errMessage && <p>{errMessage}</p>}
-
-        <Button type="submit" className="mt-3">
-          Editar
+        <Button
+          variant="primary"
+          onClick={handleAddMyExercise}
+          className="mb-3 d-block mx-auto"
+        >
+          Agregar Ejercicio
         </Button>
+
+        <h3 className="text-center mb-3">Ejercicios:</h3>
+        {exercises.length > 0 ? (
+          <ul className="list-unstyled">
+            {exercises.map((exercise, index) => (
+              <li key={index} className="mb-4">
+                <Form.Group controlId={`exercise-${index}`} className="mb-3">
+                  <Form.Label>Nombre:</Form.Label>
+                  <Form.Control
+                    plaintext
+                    readOnly
+                    defaultValue={exercise.exercise.name}
+                  />
+                </Form.Group>
+
+                <Form.Group controlId={`sets-${index}`} className="mb-3">
+                  <Form.Label>Sets:</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={sets[index] || ""}
+                    onChange={(e) => handleSetsChange(e, index)}
+                  />
+                </Form.Group>
+
+                <Form.Group controlId={`repetitions-${index}`} className="mb-3">
+                  <Form.Label>Repetitions:</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={repetitions[index] || ""}
+                    onChange={(e) => handleRepetitionsChange(e, index)}
+                  />
+                </Form.Group>
+
+                <Form.Group controlId={`rest-${index}`} className="mb-3">
+                  <Form.Label>Rest:</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={rest[index] || ""}
+                    onChange={(e) => handleRestChange(e, index)}
+                  />
+                </Form.Group>
+
+                <Form.Group controlId={`weight-${index}`} className="mb-3">
+                  <Form.Label>Weight:</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={weight[index] || ""}
+                    onChange={(e) => handleWeightChange(e, index)}
+                  />
+                </Form.Group>
+
+                <div className="text-center">
+                  <Button
+                    variant="primary"
+                    className="me-2"
+                    onClick={handleEditMyExercise(exercise._id, index)}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDeleteMyExercise(exercise._id)}
+                  >
+                    Eliminar
+                  </Button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-center">No hay ejercicios disponibles.</p>
+        )}
+
+        {errMessage && <p className="text-center">{errMessage}</p>}
+
+        <div className="text-center">
+          <Button
+            type="submit"
+            variant="primary"
+            className="mt-3"
+            style={{ marginBottom: "10px" }}
+          >
+            Editar
+          </Button>
+        </div>
       </Form>
     </div>
   );

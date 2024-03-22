@@ -101,28 +101,45 @@ function Home() {
             <Col md={8} className="text-center">
               <h1>Bienvenido, {user.name}!</h1>
               <h2>{randomAdvice}</h2>
-              {/* Esto luego meter un carrusel con todos los consejos */}
             </Col>
           </Row>
           <Row className="justify-content-center mt-5">
             <Col md={8}>
               <h1 className="text-center">Mis rutinas</h1>
-              <Carousel>
+              <Carousel
+                prevIcon={
+                  <span
+                    className="carousel-control-prev-icon"
+                    style={{ backgroundColor: "black" }}
+                  ></span>
+                }
+                nextIcon={
+                  <span
+                    className="carousel-control-next-icon"
+                    style={{ backgroundColor: "black" }}
+                  ></span>
+                }
+              >
                 {userRoutines.map((eachRoutine, index) => (
                   <Carousel.Item key={index}>
-                    <div className="card mb-3" style={{ height: "200px" }}>
-                      <div className="card-body">
-                        <h2>{eachRoutine.name}</h2>
-                        <p>{eachRoutine.description}</p>
-                        <Button
-                          onClick={() =>
-                            navigate(`/routine-details/${eachRoutine._id}`)
-                          }
-                          className="w-50 mx-auto"
-                          style={{ maxWidth: "200px" }}
-                        >
-                          Ver rutina
-                        </Button>
+                    <div
+                      className="d-flex align-items-center justify-content-center"
+                      style={{ height: "300px" }}
+                    >
+                      <div className="card" style={{ width: "300px" }}>
+                        <div className="card-body text-center">
+                          <h2>{eachRoutine.name}</h2>
+                          <p>{eachRoutine.description}</p>
+                          <Button
+                            onClick={() =>
+                              navigate(`/routine-details/${eachRoutine._id}`)
+                            }
+                            className="w-50 mx-auto"
+                            style={{ maxWidth: "200px" }}
+                          >
+                            Ver rutina
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </Carousel.Item>

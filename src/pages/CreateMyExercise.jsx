@@ -86,68 +86,80 @@ function CreateMyExercise() {
   };
 
   return (
-    <div>
-      <h2>Crear Ejercicio Personalizado</h2>
-      <Search onSelectExercise={handleSelectExercise} />
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="sets">
-          <Form.Label>Series:</Form.Label>
-          <Form.Control
-            type="number"
-            name="sets"
-            value={exerciseDetails.sets}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="repetitions">
-          <Form.Label>Repeticiones:</Form.Label>
-          <Form.Control
-            type="number"
-            name="repetitions"
-            value={exerciseDetails.repetitions}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="weight">
-          <Form.Label>Peso:</Form.Label>
-          <Form.Control
-            type="number"
-            name="weight"
-            value={exerciseDetails.weight}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="rest">
-          <Form.Label>Descanso entre series:</Form.Label>
-          <Form.Control
-            type="number"
-            name="rest"
-            value={exerciseDetails.rest}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-        <Button type="submit" disabled={loading}>
-          {loading ? "Creando..." : "Crear Ejercicio"}
-        </Button>
-      </Form>
-      <div>
-        <h3>Ejercicios Creados:</h3>
-        <ul>
-          {createdExercises.map((exercise, index) => (
-            <li key={index}>
-              <strong>{exercise.exercise.name}</strong> - Series:{" "}
-              {exercise.sets}, Repeticiones: {exercise.repetitions}, Peso:{" "}
-              {exercise.weight}, Descanso: {exercise.rest}
-            </li>
-          ))}
-        </ul>
+    <div className="container">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <h2 className="text-center mb-4">Crear Ejercicio Personalizado</h2>
+          <div className="text-center mb-4">
+            <Search onSelectExercise={handleSelectExercise} />
+          </div>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="sets">
+              <Form.Label>Series:</Form.Label>
+              <Form.Control
+                type="number"
+                name="sets"
+                value={exerciseDetails.sets}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="repetitions">
+              <Form.Label>Repeticiones:</Form.Label>
+              <Form.Control
+                type="number"
+                name="repetitions"
+                value={exerciseDetails.repetitions}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="weight">
+              <Form.Label>Peso:</Form.Label>
+              <Form.Control
+                type="number"
+                name="weight"
+                value={exerciseDetails.weight}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="rest">
+              <Form.Label>Descanso entre series:</Form.Label>
+              <Form.Control
+                type="number"
+                name="rest"
+                value={exerciseDetails.rest}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+            <div className="text-center">
+              <Button type="submit" disabled={loading} className="m-2">
+                {loading ? "Creando..." : "Crear Ejercicio"}
+              </Button>
+            </div>
+          </Form>
+          <div>
+            <h3 className="text-center mt-4">Ejercicios Creados:</h3>
+            <ul className="list-unstyled">
+              {createdExercises.map((exercise, index) => (
+                <li key={index}>
+                  <strong>{exercise.exercise.name}</strong> - Series:{" "}
+                  {exercise.sets}, Repeticiones: {exercise.repetitions}, Peso:{" "}
+                  {exercise.weight}, Descanso: {exercise.rest}
+                </li>
+              ))}
+            </ul>
+          </div>
+          {error && <Alert variant="danger">{error}</Alert>}
+          <div className="text-center mt-4">
+            <Button onClick={handleFinalizadoClick} className="m-2">
+              Ver mi rutina
+            </Button>
+          </div>
+        </div>
       </div>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Button onClick={handleFinalizadoClick}>Ver mi rutina</Button>
     </div>
   );
 }
