@@ -1,14 +1,24 @@
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import logo from "../assets/ABC-fitness-logo-animado.gif";
+import logoAnimado from "../assets/ABC-fitness-logo-animado-navbar.gif";
+import logo from "../assets/ABC-fitness-logo-navbar.png";
 
 function CustomNavbar() {
   const { userRole, loggedUserId } = useContext(AuthContext);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -27,11 +37,13 @@ function CustomNavbar() {
           <Container fluid>
             <Navbar.Brand as={NavLink} to="/">
               <img
-                src={logo}
+                src={isHovered ? logoAnimado : logo}
                 width="30"
                 height="30"
                 className="d-inline-block align-top"
                 alt="Tu Logo"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
               />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />

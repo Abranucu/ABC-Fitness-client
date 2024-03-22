@@ -38,6 +38,15 @@ function Profile() {
     getUserProfile();
   }, []);
 
+  const refreshUserProfile = async () => {
+    try {
+      const res = await service.get("/profile");
+      setUserProfile(res.data);
+    } catch (error) {
+      console.error("Error al conseguir el perfil de usuario:", error);
+    }
+  };
+
   const handleEditClick = () => {
     setEditMode(true);
     setFormData({
@@ -56,6 +65,17 @@ function Profile() {
     }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await service.patch("/profile", formData);
+      setEditMode(false);
+      refreshUserProfile(); // Actualizar el perfil después de enviar los cambios
+    } catch (error) {
+      console.error("Error editando el perfil de usuario:", error);
+    }
+  };
+
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     try {
@@ -70,6 +90,7 @@ function Profile() {
         newPassword: "",
         confirmPassword: "",
       });
+      refreshUserProfile(); // Actualizar el perfil después de cambiar la contraseña
     } catch (error) {
       console.error("Error updating password:", error);
     }
@@ -88,18 +109,9 @@ function Profile() {
         currentPassword: "",
         newEmail: "",
       });
+      refreshUserProfile(); // Actualizar el perfil después de cambiar el correo electrónico
     } catch (error) {
       console.error("Error updating email:", error);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await service.patch("/profile", formData);
-      setEditMode(false);
-    } catch (error) {
-      console.error("Error editando el perfil de usuario:", error);
     }
   };
 
@@ -114,10 +126,7 @@ function Profile() {
     uploadData.append("image", event.target.files[0]);
 
     try {
-      const response = await service.post(
-        "http://localhost:5005/api/upload",
-        uploadData
-      );
+      const response = await service.post("/upload", uploadData);
 
       const profilePic = response.data.imageUrl;
 

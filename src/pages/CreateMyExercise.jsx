@@ -18,17 +18,17 @@ function CreateMyExercise() {
   const [selectedExerciseId, setSelectedExerciseId] = useState("");
   const [createdExercises, setCreatedExercises] = useState([]);
 
-  useEffect(() => {
-    const allMyExercises = async () => {
-      try {
-        const res = await service.get(`/routines/${routineId}/exercises`);
-        setCreatedExercises(res.data);
-      } catch (error) {
-        console.error(error);
-        setError("Hubo un error al obtener los ejercicios personalizados.");
-      }
-    };
+  const allMyExercises = async () => {
+    try {
+      const res = await service.get(`/routines/${routineId}/exercises`);
+      setCreatedExercises(res.data);
+    } catch (error) {
+      console.error(error);
+      setError("Hubo un error al obtener los ejercicios personalizados.");
+    }
+  };
 
+  useEffect(() => {
     allMyExercises();
   }, [routineId]);
 
