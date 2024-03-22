@@ -129,7 +129,15 @@ function CreateRExercise() {
               <Form.Control
                 as="select"
                 value={involvedMuscles}
-                onChange={(e) => setInvolvedMuscles(e.target.value)}
+                onChange={(e) =>
+                  setInvolvedMuscles(
+                    Array.from(
+                      e.target.selectedOptions,
+                      (option) => option.value
+                    )
+                  )
+                }
+                multiple
                 required
               >
                 {musclesList.map((muscle) => (
@@ -139,6 +147,7 @@ function CreateRExercise() {
                 ))}
               </Form.Control>
             </Form.Group>
+
             <Form.Group controlId="involvedMusclesImg">
               <Form.Label>Imagen músculos involucrados:</Form.Label>
               <Form.Control
